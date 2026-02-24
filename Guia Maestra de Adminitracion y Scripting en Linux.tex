@@ -1,0 +1,537 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\geometry{a4paper, margin=2.5cm}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{xltabular}
+
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{orange},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+\begin{document}
+
+% --- PORTADA CENTRADA TIPO MANUAL ---
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+    
+    {\scshape\Large Universidad Mayor de San Andres \par}
+    {\scshape\large Carrera de Informatica \par}
+    \vspace{2cm}
+    
+    \rule{\linewidth}{0.5mm} \\[0.4cm]
+    {\huge \bfseries Guia Maestra de Administración y Scripting en Linux \par}
+    \rule{\linewidth}{0.5mm} \\[2.5cm]
+    
+    \vfill
+    
+    \begin{tabular}{ll}
+        \textbf{Materia:}    & Programación Web I - INF 113 \\
+        \textbf{Docente:}    & Lic. Brigida Carvajal Blanco \\
+        \textbf{Estudiante:} & Yamil Dylan Luna Quispe \\
+        \textbf{Paralelo:}   & C
+    \end{tabular}
+    
+    \vfill
+    
+    {\large \today \par}
+    \vspace*{1cm}
+\end{titlepage}
+
+% --- ÍNDICE ---
+\newpage
+\tableofcontents
+\newpage
+
+% --- CONTENIDO ---
+
+\section{Sección I: Comandos Básicos (Navegación y Archivos)}
+
+\subsection{Gestión de Directorios}
+\textbf{\texttt{ls}} - Lista el contenido de un directorio.\\
+\textit{Ejemplo 1:} Listar con detalles y tamaño legible.
+\begin{lstlisting}[language=bash]
+ls -lh /var/log
+\end{lstlisting}
+\textit{Ejemplo 2:} Listar todos los archivos, incluyendo ocultos.
+\begin{lstlisting}[language=bash]
+ls -la /etc/
+\end{lstlisting}
+
+\textbf{\texttt{cd}} - Cambia el directorio actual de trabajo.\\
+\textit{Ejemplo 1:} Ir al directorio de Nginx.
+\begin{lstlisting}[language=bash]
+cd /etc/nginx/
+\end{lstlisting}
+\textit{Ejemplo 2:} Volver al directorio anterior.
+\begin{lstlisting}[language=bash]
+cd -
+\end{lstlisting}
+
+\textbf{\texttt{mkdir}} - Crea nuevos directorios.\\
+\textit{Ejemplo 1:} Crear directorios anidados.
+\begin{lstlisting}[language=bash]
+mkdir -p /backups/2023/db/
+\end{lstlisting}
+\textit{Ejemplo 2:} Crear directorio con permisos específicos.
+\begin{lstlisting}[language=bash]
+mkdir -m 700 /root/scripts_privados
+\end{lstlisting}
+
+\textbf{\texttt{pwd}} - Imprime la ruta absoluta del directorio actual.\\
+\textit{Ejemplo 1:} Verificar ubicación actual.
+\begin{lstlisting}[language=bash]
+pwd
+\end{lstlisting}
+\textit{Ejemplo 2:} Guardar ruta en variable.
+\begin{lstlisting}[language=bash]
+DIRECTORIO_ACTUAL=$(pwd)
+\end{lstlisting}
+
+\subsection{Manipulación de Archivos}
+\textbf{\texttt{cp}} - Copia archivos y directorios.\\
+\textit{Ejemplo 1:} Respaldar archivo de configuración.
+\begin{lstlisting}[language=bash]
+cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+\end{lstlisting}
+\textit{Ejemplo 2:} Copiar directorio preservando permisos.
+\begin{lstlisting}[language=bash]
+cp -rp /var/www/html /mnt/respaldo/html_backup
+\end{lstlisting}
+
+\textbf{\texttt{mv}} - Mueve o renombra archivos y directorios.\\
+\textit{Ejemplo 1:} Renombrar archivo.
+\begin{lstlisting}[language=bash]
+mv syslog syslog.old
+\end{lstlisting}
+\textit{Ejemplo 2:} Mover archivo a otro directorio.
+\begin{lstlisting}[language=bash]
+mv cert.pem /etc/ssl/certs/
+\end{lstlisting}
+
+\textbf{\texttt{rm}} - Elimina archivos o directorios.\\
+\textit{Ejemplo 1:} Forzar borrado de archivos.
+\begin{lstlisting}[language=bash]
+rm -f /var/log/apache2/*.gz
+\end{lstlisting}
+\textit{Ejemplo 2:} Borrar directorio y su contenido.
+\begin{lstlisting}[language=bash]
+rm -rf /var/cache/apt/archives/
+\end{lstlisting}
+
+\textbf{\texttt{touch}} - Crea un archivo vacío o actualiza la fecha de modificación.\\
+\textit{Ejemplo 1:} Crear archivo de bloqueo.
+\begin{lstlisting}[language=bash]
+touch /var/run/backup.lock
+\end{lstlisting}
+\textit{Ejemplo 2:} Actualizar fecha de modificación.
+\begin{lstlisting}[language=bash]
+touch /etc/systemd/system/miservicio.service
+\end{lstlisting}
+
+\textbf{\texttt{cat}} - Concatena y muestra el contenido de archivos.\\
+\textit{Ejemplo 1:} Ver contenido de un archivo.
+\begin{lstlisting}[language=bash]
+cat /etc/resolv.conf
+\end{lstlisting}
+\textit{Ejemplo 2:} Unir varios archivos en uno.
+\begin{lstlisting}[language=bash]
+cat log.1 log.2 log.3 > log_completo.txt
+\end{lstlisting}
+
+\subsection{Ayuda y Manuales}
+\textbf{\texttt{man}} - Muestra el manual de usuario de un comando.\\
+\textit{Ejemplo 1:} Ver manual de un comando.
+\begin{lstlisting}[language=bash]
+man netstat
+\end{lstlisting}
+\textit{Ejemplo 2:} Buscar palabra en el manual.
+\begin{lstlisting}[language=bash]
+man sshd # y luego escribir /port
+\end{lstlisting}
+
+\textbf{\texttt{help}} - Muestra información de ayuda para comandos integrados (built-ins) de Bash.\\
+\textit{Ejemplo 1:} Ver ayuda de comando interno.
+\begin{lstlisting}[language=bash]
+help cd
+\end{lstlisting}
+\textit{Ejemplo 2:} Consultar uso de variables.
+\begin{lstlisting}[language=bash]
+help local
+\end{lstlisting}
+
+\section{Sección II: Comandos Avanzados (Sistema y Filtros)}
+
+\subsection{Permisos y Dueños}
+\textbf{\texttt{chmod}} - Cambia los permisos de acceso de un archivo.\\
+\textit{Ejemplo 1:} Dar permiso de ejecución.
+\begin{lstlisting}[language=bash]
+chmod +x /usr/local/bin/mantenimiento.sh
+\end{lstlisting}
+\textit{Ejemplo 2:} Asignar permisos estrictos.
+\begin{lstlisting}[language=bash]
+chmod 600 ~/.ssh/id_rsa
+\end{lstlisting}
+
+\textbf{\texttt{chown}} - Cambia el propietario y/o grupo de un archivo.\\
+\textit{Ejemplo 1:} Cambiar propietario de directorio.
+\begin{lstlisting}[language=bash]
+chown -R www-data:www-data /var/www/html
+\end{lstlisting}
+\textit{Ejemplo 2:} Cambiar grupo de un archivo.
+\begin{lstlisting}[language=bash]
+chown :sysadmins configuracion_red.conf
+\end{lstlisting}
+
+\subsection{Filtros y Tuberías}
+\textbf{\texttt{grep}} - Busca patrones dentro de archivos.\\
+\textit{Ejemplo 1:} Buscar patrón en un log.
+\begin{lstlisting}[language=bash]
+grep "Failed password" /var/log/auth.log
+\end{lstlisting}
+\textit{Ejemplo 2:} Buscar ignorando mayúsculas.
+\begin{lstlisting}[language=bash]
+grep -i "error" /var/log/syslog
+\end{lstlisting}
+
+\textbf{\texttt{find}} - Busca archivos en una jerarquía de directorios.\\
+\textit{Ejemplo 1:} Buscar archivos mayores a 500MB.
+\begin{lstlisting}[language=bash]
+find / -type f -size +500M -exec ls -lh {} \;
+\end{lstlisting}
+\textit{Ejemplo 2:} Buscar archivos modificados recientemente.
+\begin{lstlisting}[language=bash]
+find /var/log -name "*.log" -mtime -7
+\end{lstlisting}
+
+\textbf{\texttt{head}} - Muestra el inicio de un archivo.\\
+\textit{Ejemplo 1:} Ver las primeras 20 líneas.
+\begin{lstlisting}[language=bash]
+head -n 20 usuarios.csv
+\end{lstlisting}
+\textit{Ejemplo 2:} Mostrar los primeros bytes de un archivo.
+\begin{lstlisting}[language=bash]
+head -c 100 /var/log/syslog
+\end{lstlisting}
+
+\textbf{\texttt{tail}} - Muestra el final de un archivo.\\
+\textit{Ejemplo 1:} Monitorear log en tiempo real.
+\begin{lstlisting}[language=bash]
+tail -f /var/log/nginx/access.log
+\end{lstlisting}
+\textit{Ejemplo 2:} Ver las últimas 15 líneas.
+\begin{lstlisting}[language=bash]
+tail -n 15 /etc/passwd
+\end{lstlisting}
+
+\textbf{\texttt{sort}} - Ordena líneas de texto.\\
+\textit{Ejemplo 1:} Ordenar archivo numéricamente.
+\begin{lstlisting}[language=bash]
+sort -n ips.txt
+\end{lstlisting}
+\textit{Ejemplo 2:} Ordenar a la inversa.
+\begin{lstlisting}[language=bash]
+sort -r nombres.txt
+\end{lstlisting}
+
+\textbf{\texttt{wc}} - Cuenta bytes, palabras o líneas.\\
+\textit{Ejemplo 1:} Contar líneas de un archivo.
+\begin{lstlisting}[language=bash]
+wc -l /etc/passwd
+\end{lstlisting}
+\textit{Ejemplo 2:} Contar palabras en un documento.
+\begin{lstlisting}[language=bash]
+wc -w reporte.txt
+\end{lstlisting}
+
+\subsection{Procesos y Red}
+\textbf{\texttt{top}} - Muestra los procesos del sistema en tiempo real.\\
+\textit{Ejemplo 1:} Ver procesos de un usuario.
+\begin{lstlisting}[language=bash]
+top -u mysql
+\end{lstlisting}
+\textit{Ejemplo 2:} Guardar estado en un log.
+\begin{lstlisting}[language=bash]
+top -b -n 1 > uso_cpu.log
+\end{lstlisting}
+
+\textbf{\texttt{ps}} - Reporta el estado de los procesos actuales.\\
+\textit{Ejemplo 1:} Listar todos los procesos.
+\begin{lstlisting}[language=bash]
+ps aux
+\end{lstlisting}
+\textit{Ejemplo 2:} Buscar un proceso específico.
+\begin{lstlisting}[language=bash]
+ps -ef | grep postgres
+\end{lstlisting}
+
+\textbf{\texttt{kill}} - Envía señales a los procesos (generalmente para terminarlos).\\
+\textit{Ejemplo 1:} Terminar proceso por PID.
+\begin{lstlisting}[language=bash]
+kill 1234
+\end{lstlisting}
+\textit{Ejemplo 2:} Forzar cierre de proceso.
+\begin{lstlisting}[language=bash]
+kill -9 1234
+\end{lstlisting}
+
+\section{Sección III: Programación Shell (Bash Scripting)}
+
+\subsection{Estructura de un script (Shebang)}
+El \textbf{Shebang (\texttt{\#!/bin/bash})} indica al sistema operativo qué interprete usar para ejecutar el script. Es la primera línea obligatoria.
+\begin{lstlisting}[language=bash]
+#!/bin/bash
+# Este es un comentario
+echo "Iniciando script de administracion..."
+\end{lstlisting}
+
+\subsection{Variables y paso de argumentos}
+Las variables almacenan datos, y los argumentos (\texttt{\$1}, \texttt{\$2}) permiten enviar parámetros al script en tiempo de ejecución.
+\begin{lstlisting}[language=bash]
+#!/bin/bash
+USUARIO=$1
+echo "Configurando el entorno para el usuario: $USUARIO"
+DIRECTORIO_HOME="/home/$USUARIO"
+echo "El directorio asignado es $DIRECTORIO_HOME"
+\end{lstlisting}
+
+\subsection{Estructuras de Control}
+\textbf{Condicional IF-ELSE:} Ideal para verificar si un archivo existe o un servicio corre.
+\begin{lstlisting}[language=bash]
+#!/bin/bash
+ARCHIVO_CONF="/etc/nginx/nginx.conf"
+if [ -f "$ARCHIVO_CONF" ]; then
+    echo "El archivo de configuracion existe. Reiniciando Nginx..."
+    systemctl restart nginx
+else
+    echo "Error: Archivo no encontrado. Deteniendo operacion."
+fi
+\end{lstlisting}
+
+\textbf{Bucle FOR:} Útil para iterar sobre listas de archivos o usuarios.
+\begin{lstlisting}[language=bash]
+#!/bin/bash
+# Cambiar permisos a todos los scripts del directorio
+for script in /opt/scripts/*.sh; do
+    chmod +x "$script"
+    echo "Permisos de ejecucion asignados a $script"
+done
+\end{lstlisting}
+
+\textbf{Bucle WHILE:} Excelente para leer archivos línea por línea o monitorear estados.
+\begin{lstlisting}[language=bash]
+#!/bin/bash
+# Leer un archivo con una lista de IPs y hacerles ping
+while read IP; do
+    ping -c 1 $IP > /dev/null
+    if [ $? -eq 0 ]; then
+        echo "Host $IP esta ARRIBA"
+    else
+        echo "Host $IP esta CAIDO"
+    fi
+done < lista_ips.txt
+\end{lstlisting}
+
+\subsection{Script Funcional: Backup Automatizado}
+Este script realiza una copia de seguridad comprimida del directorio web y limpia backups de más de 7 días.
+\begin{lstlisting}[language=bash]
+#!/bin/bash
+# Definicion de variables
+FECHA=$(date +"%Y-%m-%d")
+DIR_ORIGEN="/var/www/html"
+DIR_DESTINO="/backups/web"
+NOMBRE_ARCHIVO="backup_web_$FECHA.tar.gz"
+
+echo "=== Iniciando Backup: $FECHA ==="
+# Crear directorio de destino si no existe
+mkdir -p $DIR_DESTINO
+
+# Comprimir el directorio
+tar -czf $DIR_DESTINO/$NOMBRE_ARCHIVO $DIR_ORIGEN 2> /var/log/backup_error.log
+
+if [ $? -eq 0 ]; then
+    echo "Backup realizado exitosamente en $DIR_DESTINO/$NOMBRE_ARCHIVO"
+    # Eliminar backups mas antiguos a 7 dias
+    find $DIR_DESTINO -type f -name "*.tar.gz" -mtime +7 -exec rm {} \;
+    echo "Limpieza de backups antiguos completada."
+else
+    echo "Hubo un error en el backup. Revisa /var/log/backup_error.log"
+fi
+\end{lstlisting}
+
+\section{Sección IV: Guía de Diagnóstico (Errores Comunes)}
+
+\begin{enumerate}
+    \item \textbf{Permission denied}
+    \begin{itemize}
+        \item \textbf{Por qué ocurre:} El usuario actual no tiene los permisos suficientes (lectura, escritura o ejecución) sobre un archivo o directorio.
+        \item \textbf{Cómo identificarlo:} La terminal arroja \texttt{bash: ./script.sh: Permission denied} o \texttt{cat: /etc/shadow: Permission denied}.
+        \item \textbf{Solución:} Si es un archivo de sistema, elevar privilegios anteponiendo \texttt{sudo}. Si es un script propio, otorgar permisos con \texttt{chmod +x script.sh} o cambiar el dueño con \texttt{chown}.
+    \end{itemize}
+
+    \item \textbf{Command not found}
+    \begin{itemize}
+        \item \textbf{Por qué ocurre:} El sistema no encuentra el binario del comando. Suele deberse a errores tipográficos, a que el paquete no está instalado, o a que la ruta no está en la variable de entorno \texttt{\$PATH}.
+        \item \textbf{Cómo identificarlo:} \texttt{bash: ngix: command not found}.
+        \item \textbf{Solución:} Verificar la ortografía. Instalar el paquete necesario (ej. \texttt{apt install nginx}). Si es un script local, ejecutarlo indicando la ruta relativa: \texttt{./script.sh}.
+    \end{itemize}
+
+    \item \textbf{No such file or directory}
+    \begin{itemize}
+        \item \textbf{Por qué ocurre:} Se intenta acceder, mover o copiar a una ruta que no existe, a menudo por confusión entre rutas absolutas (que inician con \texttt{/}) y relativas.
+        \item \textbf{Cómo identificarlo:} Al usar \texttt{cd} o \texttt{cat} hacia un destino inexistente.
+        \item \textbf{Solución:} Usar \texttt{ls} o pwd para verificar la ubicación actual. Escribir rutas absolutas completas para evitar ambigüedades.
+    \end{itemize}
+
+    \item \textbf{Directory not empty}
+    \begin{itemize}
+        \item \textbf{Por qué ocurre:} Se intenta borrar un directorio que contiene archivos usando el comando básico \texttt{rmdir} o \texttt{rm} sin la bandera recursiva.
+        \item \textbf{Cómo identificarlo:} \texttt{rm: cannot remove 'carpeta/': Directory not empty}.
+        \item \textbf{Solución:} Usar la bandera recursiva \texttt{-r} con \texttt{rm}, ejemplo: \texttt{rm -r carpeta/}. Para forzar sin preguntar, añadir \texttt{-f} (con mucho cuidado): \texttt{rm -rf carpeta/}.
+    \end{itemize}
+
+    \item \textbf{No space left on device}
+    \begin{itemize}
+        \item \textbf{Por qué ocurre:} La partición del disco duro está al 100\% de capacidad o se han agotado los inodos disponibles en el sistema de archivos.
+        \item \textbf{Cómo identificarlo:} Al intentar escribir un archivo nuevo: \texttt{touch: cannot touch 'archivo': No space left on device}.
+        \item \textbf{Solución:} Usar \texttt{df -h} para verificar el espacio en disco y \texttt{df -i} para inodos. Limpiar archivos innecesarios como logs rotados viejos, o la caché del gestor de paquetes (\texttt{apt clean}).
+    \end{itemize}
+\end{enumerate}
+
+
+\section{Sección V: Tuberías y Redireccionamientos}
+
+En Linux, impera la filosofía de que ``todo es un archivo'' y los procesos se comunican mediante flujos de datos.
+
+\begin{itemize}
+    \item \textbf{Standard Input (stdin - 0):} La entrada estándar de datos (por defecto, el teclado).
+    \item \textbf{Standard Output (stdout - 1):} La salida estándar de datos correctos (la pantalla).
+    \item \textbf{Standard Error (stderr - 2):} La salida estándar de mensajes de error (también la pantalla).
+\end{itemize}
+
+\textbf{Operadores principales:}
+
+\begin{itemize}
+    \item \verb!|! (pipe/tubería): Toma el \textit{stdout} del comando izquierdo y lo inyecta como \textit{stdin} en el comando derecho.
+    \item \verb!>! : Redirige el \textit{stdout} hacia un archivo, \textbf{sobrescribiéndolo}.
+    \item \verb!>>! : Redirige el \textit{stdout} hacia un archivo, \textbf{añadiéndolo} al final (append).
+    \item \verb!2>! : Redirige únicamente el \textit{stderr} (errores) hacia un archivo.
+\end{itemize}
+
+
+\subsection{Ejemplos Obligatorios}
+\textbf{1. Filtro combinado:} Buscar archivo específico.
+\begin{lstlisting}[language=bash]
+ls -la /etc | grep "passwd"
+\end{lstlisting}
+
+\textbf{2. Conteo y ordenamiento:} Ordenar y contar líneas únicas.
+\begin{lstlisting}[language=bash]
+cat lista_usuarios.txt | sort -u | wc -l
+\end{lstlisting}
+
+\textbf{3. Registro de errores:} Guardar error en log.
+\begin{lstlisting}[language=bash]
+ls /directorio_fantasma_404 2> errores.log
+\end{lstlisting}
+
+\newpage
+\section{Anexo: Transparencia de Uso de IA}
+De acuerdo a las normativas de evaluación, se declara el uso de Inteligencia Artificial como soporte para la investigación, corrección y optimización del manual:
+
+\vspace{0.5cm}
+
+\begin{xltabular}{\textwidth}{|p{2.5cm}|p{5cm}|X|}
+\hline
+\textbf{IA} & \textbf{Prompt} & \textbf{Parte generada / corregida} \\
+\hline
+\endfirsthead
+\hline
+\textbf{IA} & \textbf{Prompt} & \textbf{Parte generada / corregida} \\
+\hline
+\endhead
+
+Google Gemini & Revisa la siguiente guia de trabajo y dime que secciones son obligatorias para cumplir con todos los puntos & Organizacion de la estructura principal y secciones del documento \\
+\hline
+Google Gemini & Como empiezo un documento de Latex en español con margenes de dos centimetros y medio & Configuracion inicial de paquetes y geometria del documento \\
+\hline
+Google Gemini & Estructura mi manual para que los titulos y subtitulos tengan orden y aparezcan correctamente en el indice & Jerarquizacion de titulos y configuracion del indice de contenidos \\
+\hline
+Google Gemini & Como hago para que Latex me genere el indice de contenidos solito en una hoja nueva & Implementacion de comandos tableofcontents y newpage \\
+\hline
+Google Gemini & Cuales son los comandos mas basicos para moverme entre carpetas y ver archivos & Seleccion de comandos y ejemplos practicos para la Seccion I \\
+\hline
+Google Gemini & Como puedo poner texto en negrita & Uso de comandos textbf y texttt en el documento \\
+\hline
+Google Gemini & Enseñame como se usan los comandos para copiar y borrar cosas desde la terminal con ejemplos para un servidor & Contenido de manipulacion de archivos en la Seccion I \\
+\hline
+Google Gemini & Como hago para poner bloques de codigo con fondo gris y letras de colores en mi archivo de Latex & Configuracion del paquete listings y definicion de colores personalizados \\
+\hline
+Google Gemini & Como funcionan los permisos de archivos en Linux explicame que es dueños y como se cambian & Verificacion técnica de la logica de permisos y propiedad de archivos en la Seccion II \\
+\hline
+Google Gemini & Como buscar palabras especificas dentro de un archivo de texto o filtrar datos de una lista de usuarios & Desarrollo de contenido para Filtros y Tuberias en la Seccion II \\
+\hline
+Google Gemini & Encontrar archivos que sean grandes o que se hayan creado hace poco tiempo, que comando se usa & Ejemplos de busqueda avanzada find en la Seccion II \\
+\hline
+Google Gemini & Como ver que programas estan abiertos en mi sistema y como detener uno que se quedo trabado & Redaccion de la parte de Procesos y Red en la Seccion II \\
+\hline
+Google Gemini & En la parte de Scripts de Bash que es esa primera linea con un signo de gato y para que sirve & Introduccion a la estructura del Shebang en la Seccion III \\
+\hline
+Google Gemini & Como puedo guardar un dato como una fecha o un nombre en una palabra para usarla despues en mi script & Explicacion de Variables en la Seccion III \\
+\hline
+Google Gemini & Necesito que mi script reciba informacion desde afuera cuando lo ejecuto como un nombre de usuario, como se hace & Desarrollo de la subseccion de Paso de Argumentos en la Seccion III \\
+\hline
+Google Gemini & Explicame como hacer que mi programa tome decisiones o que repita una tarea muchas veces con bucles & Creacion de ejemplos de Estructuras de Control en la Seccion III \\
+\hline
+Google Gemini & Como crear un programa que guarde una carpeta en un archivo comprimido y que borre los respaldos de mas de 7 dias & Desarrollo del Script Funcional de Backup Automatizado en la Seccion III \\
+\hline
+Google Gemini & Revisa mi programa de copia de seguridad y dime si la logica para borrar archivos viejos es la mas adecuada & Verificacion de la logica de programacion y limpieza de comandos en la Seccion III \\
+\hline
+Google Gemini & Dime 5 errores tipicos que le salen a alguien que usa linux y explicame porque pasan y como se arreglan & Generacion de contenido técnico para la Seccion IV de Diagnostico \\
+\hline
+Google Gemini & Como hago una lista con puntos o numeros en Latex para que los errores se vean ordenados & Uso de entornos itemize y enumerate para la guia de errores \\
+\hline
+Google Gemini & En el sistema de entrada y salida de datos para que sirven los simbolos de mayor que y las barras & Base teorica para la Seccion V sobre flujos de datos \\
+\hline
+Google Gemini & Dame informacion detallada sobre como conectar un comando con otro y como guardar los mensajes de error en un archivo aparte & Desarrollo de contenido y ejemplos para la seccion de flujos de datos en la Seccion V \\
+\hline
+Google Gemini & Como hago una tabla en Latex que tenga un ancho como la hoja y que las columnas tengan lineas negras & Configuracion del entorno xltabular para la tabla de transparencia \\
+\hline
+Google Gemini & Ayudame a resaltar el codigo y las partes importantes del manual para que se vea ordenado y sea facil de leer & Configuracion visual y resaltado de sintaxis en los bloques de comandos \\
+\hline
+Google Gemini & Revisa mi trabajo y dime si hay errores en la escritura o si falta cerrar alguna parte que arruine como se ve el documento & Depuracion de errores de formato y revision final del archivo \\
+\hline
+Google Gemini & Elimina las partes que se repiten y quita cualquier ajuste que no este usando para que el archivo este limpio & Optimizacion de contenido y eliminacion de elementos redundantes \\
+\hline
+ChatGpt & LaTeX Error: begin{itemize} ended by end{quoting}. Missing inserted. Too many 's. Dame solucion y el codigo completo corregido & Solucion para colocar los signos de los operadores principales de tuberias y redreccionamiento \\
+\hline
+\end{xltabular}
+
+\end{document}
